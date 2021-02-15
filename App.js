@@ -1,7 +1,6 @@
-import React, { memo, useCallback, useState } from 'react'
-import { Image, View } from 'react-native'
+import React, { useCallback, useState } from 'react'
+import { View } from 'react-native'
 import MapView, { Marker } from 'react-native-maps'
-import circleWhitePng from './circle-white.png'
 
 let pinId = 0
 const App = () => {
@@ -25,7 +24,7 @@ const App = () => {
   }, [])
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'red' }}>
+    <View style={{ flex: 1, backgroundColor: 'red', borderColor: '#ff0000', borderWidth: 2 }}>
       <MapView
         provider='google'
         style={{ flex: 1 }}
@@ -38,27 +37,10 @@ const App = () => {
         }}
         onRegionChangeComplete={handleRegionChangeComplete}
       >
-        {pins.map(pin => <CustomMarker key={pin.id} {...pin} />)}
+        {pins.map(pin => <Marker key={pin.id} coordinate={pin} />)}
       </MapView>
     </View>
   )
 }
 
 export default App
-
-const CustomMarker = memo(coord => {
-  const [shouldTrackViewChanges, setShouldTrackViewChanges] = useState(true)
-
-  return (
-    <Marker
-      coordinate={coord}
-      tracksViewChanges={shouldTrackViewChanges}
-    >
-      <Image
-        source={circleWhitePng}
-        onLoad={() => {setShouldTrackViewChanges(false)}}
-        fadeDuration={0}
-      />
-    </Marker>
-  )
-})
